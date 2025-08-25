@@ -12,12 +12,32 @@
   <main class="container">
     <h1>Halo 👋</h1>
     <p>Ini contoh AWP / PWA simple.</p>
-    <button id="btnClick">Klik Saya</button>
+    <button onclick="mintaIzinNotifikasi()">Aktifkan Notifikasi</button>
     <p id="status"></p>
   </main>
 
   <script src="app.js"></script>
   <script>
+    function mintaIzinNotifikasi() {
+  if (!("Notification" in window)) {
+    alert("Browser tidak mendukung notifikasi");
+  } else if (Notification.permission === "granted") {
+    tampilkanNotifikasi();
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        tampilkanNotifikasi();
+      }
+    });
+  }
+}
+
+function tampilkanNotifikasi() {
+  new Notification("Halo!", {
+    body: "Ini notifikasi simple dari AWP kamu 🎉",
+    icon: "icon.png" // ganti dengan icon aplikasi kamu
+  });
+}
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js")
         .then((reg) => console.log("Service Worker terdaftar", reg.scope))
